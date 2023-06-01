@@ -1,0 +1,17 @@
+import 'package:dio/dio.dart';
+import 'package:yes_no_app/domain/entities/message.dart';
+import 'package:yes_no_app/infrastructure/models/yes_no_model.dart';
+
+class GetYesNoAnswer {
+  final _dio = Dio();
+  Future<Message> getAnswer() async {
+    final response = await _dio.get('https://yesno.wtf/api');
+    if (response.statusCode == 200) {
+      YesNoModel model = YesNoModel.fromJson(response.data);
+
+      return model.toMessageEntity();
+    } else {
+      throw Exception('Ha ocurrido un error');
+    }
+  }
+}
